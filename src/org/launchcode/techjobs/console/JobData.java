@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 /**
@@ -76,13 +77,49 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value)) {
                 jobs.add(row);
             }
         }
 
         return jobs;
     }
+
+
+    /**
+     * Returns results of search the jobs data by value, using
+     * inclusion of the search term.
+     * searches all columns - data for each result
+     *search for a string within each of the columns
+     *should not contain duplicate jobs. So, for example, if a listing has position type
+     *  “Web - Front End” and name “Front end web dev” then searching for
+     *  “web” should not include the listing twice.
+     *
+     * @param value Value of teh field to search for
+     * @return List of all jobs matching the criteria
+     */
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+            for (Map.Entry<String, String> mapEntry : row.entrySet()) {
+                String aValue = mapEntry.getValue();
+            //for(String aValue : row.values()){
+
+                if (aValue.toLowerCase().contains(value)) {
+                    if(!jobs.contains(row)){
+                        jobs.add(row);
+                    }
+                }
+            }
+        }
+        return jobs;
+    }
+
 
     /**
      * Read in data from a CSV file and store it in a list

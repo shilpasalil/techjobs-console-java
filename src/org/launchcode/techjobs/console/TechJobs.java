@@ -1,7 +1,9 @@
 package org.launchcode.techjobs.console;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -58,10 +60,11 @@ public class TechJobs {
 
                 // What is their search term?
                 System.out.println("\nSearch term: ");
-                String searchTerm = in.nextLine();
+                String searchTerm = in.nextLine().toLowerCase();
 
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not yet implemented.");
+                   // System.out.println("Search all fields not yet implemented.");
+                    printJobs(JobData.findByValue(searchTerm));
                 } else {
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                 }
@@ -73,6 +76,7 @@ public class TechJobs {
     private static String getUserSelection(String menuHeader, HashMap<String, String> choices) {
 
         Integer choiceIdx;
+        //String choiceIdx;
         Boolean validChoice = false;
         String[] choiceKeys = new String[choices.size()];
 
@@ -97,6 +101,9 @@ public class TechJobs {
             in.nextLine();
 
             // Validate user's input
+
+
+
             if (choiceIdx < 0 || choiceIdx >= choiceKeys.length) {
                 System.out.println("Invalid choice. Try again.");
             } else {
@@ -111,6 +118,17 @@ public class TechJobs {
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
 
-        System.out.println("printJobs is not implemented yet");
+        //System.out.println("printJobs is not implemented yet");
+        if(someJobs.size()>0){
+            for(HashMap<String,String> jobs: someJobs){
+                System.out.println("\n*****");
+                for(Map.Entry<String, String> job: jobs.entrySet()){
+                    System.out.println(job.getKey()+": "+job.getValue());
+                }
+                System.out.println("*****");
+            }
+        }else{
+            System.out.println("Data list is empty");
+        }
     }
 }
